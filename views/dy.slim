@@ -1,0 +1,69 @@
+doctype 5
+html
+  head
+    title △ candle
+  body
+    h1 candle
+    table align='center'
+      - @rec.each do |e|
+        tr
+          td =e[0].sub("-", "年").sub("-", "月").sub(/$/, "日")
+          td =e[1]
+          td =e[2]
+          td =e[3]
+          td =e[4]
+          td =e[5].to_i.to_s.sub(/$/, "株")
+          td =e[6]
+sass:
+  img
+    width: 100px
+  table
+    /* text-align: center */
+    border: 1px solid lightgreen
+    font-size: xx-small
+  td
+    border: 1px solid lightblue
+    font-size: xx-small
+    text-align: right
+   
+  tr:nth-child(2n+1) 
+    background: #F0FFFF
+  
+  html 
+    display: table
+  
+  html, body 
+    width: 100%
+    height: 100%
+    /* margin: 0 */
+    /* padding: 0 */
+  
+  body 
+    display: table-cell
+    text-align: center
+    vertical-align: middle
+  
+/ css:
+/   table, td {
+/     border: 1px solid blue;
+/     font-size: xx-small;
+/     text-align: right;
+/   }
+/   tr:nth-child(2n+1) {
+/     background: #F0FFFF;
+/   }
+/   html {
+/     display: table;
+/   }
+/   html, body {
+/     width: 100%;
+/     height: 100%;
+/   }
+/   body {
+/     display: table-cell;
+/     text-align: center;
+/     vertical-align: middle;
+/   }
+  /* table { */
+  /*   text-align: center; */
+  /* } */
