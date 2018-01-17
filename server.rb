@@ -9,7 +9,7 @@ $stdout.sync = true
 #$stderr.sync = true
 before do
   content_type :txt
-  @db = SQLite3::Database.new( "shareprice.db" )
+  @db = SQLite3::Database.open( "shareprice.db", :readonly => true )
   @cdb = SQLite3::Database.new( "codeTbl.db" )
 end
 set :bind, '0.0.0.0'
