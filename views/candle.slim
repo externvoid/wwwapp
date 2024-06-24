@@ -1,0 +1,133 @@
+doctype 5
+html lang='ja'
+  head
+    title △ candle
+    / <!-- Global site tag (gtag.js) - Google Analytics -->
+    / script { async src="https://www.googletagmanager.com/gtag/js?id=UA-156997905-1" }
+    / javascript:
+    /   window.dataLayer = window.dataLayer || [];
+    /   function gtag(){dataLayer.push(arguments);}
+    /   gtag('js', new Date());
+    /   gtag('config', 'UA-156997905-1');
+
+    / migrate to Apache ECharts 
+
+    script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
+    script  src="https://www.google.com/jsapi"
+    link  href="/style.css" rel="stylesheet" tyep="text/css"
+    meta name="viewport" content="width=device-width,initial-scale=1"
+  sass:
+    img
+      width: 100px
+    div#chart_div
+      height: 600px
+  body
+
+    javascript:
+      console.log("OK@chart.slim");
+      const code = "#{@company.split(':')[3..-1].join(':')}";
+      // const code = "#{@code}: #{@company}";
+      let test2 = #{{@test2.to_json}};
+      let test = #{{@test}};
+      console.log(code);
+      console.log(test2);
+      google.load("visualization", "1", {
+        packages: ["corechart"]
+      });
+      google.setOnLoadCallback(drawChart);
+
+      function makeData(jsonData) {
+      console.log(jsonData)
+
+      // ========== データ設定 ========== 
+        var data = new google.visualization.arrayToDataTable(jsonData, true);
+
+      // ========== 表示設定 ========== 
+        var options = {
+          legend: 'none',
+          bar: { groupWidth: '95%' },
+          candlestick: {
+            fallingColor: { strokeWidth: 1, fill: 'royalblue', 
+              stroke: "royalblue" },
+            risingColor: { strokeWidth: 1, fill: 'white',
+              stroke: "royalblue" }
+          }, 
+          title: code,
+          chartArea: { width: "50%", height: "90%" },
+          vAxis: { title: "Yen" },
+          // fontSize: 15,
+          hAxis: {textStyle: {fontSize: 12}, slantedTextAngle: 90,
+            maxAlternation: 20, showTextEvery: 8
+          }
+        };
+
+      // ========== 描画処理 ========== 
+        var chart = new google.visualization.CandlestickChart(document.getElementById("chart_div"));
+
+        chart.draw(data, options);
+      }; // end of func
+
+      function drawChart() { // 2023-09-30
+        makeData(test)
+        // $.getJSON("https://192.168.0.50/json/" + code, makeData)
+        // $.getJSON("https://stock.bad.mn/json/" + code, makeData)
+      };
+
+    /* h1 Candle */
+    h1 =@company.split(':')[0..2].join ':'
+    #chart_div
+
+sass:
+  table
+    /* text-align: center */
+    border: 1px solid lightgreen
+    font-size: xx-small
+  td
+    border: 1px solid lightblue
+    font-size: xx-small
+    text-align: right
+   
+  tr:nth-child(2n+1) 
+    background: #F0FFFF
+  
+  html 
+    display: table
+  
+  html, body 
+    width: 100%
+    height: 100%
+    /* margin: 0 */
+    /* padding: 0 */
+  
+  body 
+    display: table-cell
+    text-align: center
+    vertical-align: middle
+  
+/ css:
+/   table, td {
+/     border: 1px solid blue;
+/     font-size: xx-small;
+/     text-align: right;
+/   }
+/   tr:nth-child(2n+1) {
+/     background: #F0FFFF;
+/   }
+/   html {
+/     display: table;
+/   }
+/   html, body {
+/     width: 100%;
+/     height: 100%;
+/   }
+/   body {
+/     display: table-cell;
+/     text-align: center;
+/     vertical-align: middle;
+/   }
+  /* table { */
+  /*   text-align: center; */
+  /* } */
+    link rel="stylesheet" href="/style.css" tyep="text/css"
+      /*  const str = #{@rec[0]} */
+      //  console.log(str)

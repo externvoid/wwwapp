@@ -1,0 +1,59 @@
+helpers do
+  def wk_candle(h)
+    br = []
+    h.each_pair{|k, v|
+      # p k, v # k = 2017, 2016, ...
+      v.each_value{|vv| # v = 42, 41, ...
+        cr = []
+        cr << vv.reverse.first[0]
+        cr << vv.reverse.first[1]
+        tr = []; vol = 0.0
+        vv.each{|e|
+          tr = tr + e[1..4]
+          vol += e[5]
+        }
+        cr << tr.max
+        cr << tr.min
+        cr << vv.reverse.last[4]
+        cr << vol
+        br << cr
+      }
+    }
+    br
+  end
+  def foo e, n # e: code
+    if e.gsub(/[a-zA-Z]/, '0').to_i < 1000 then
+    sql = "select date, open, high, low, close, volume, adj from " +
+          "sub.'#{e}' order by date desc limit #{n};"
+    else
+    sql = "select date, open, high, low, close, volume, adj from " +
+          "'#{e}' order by date desc limit #{n};"
+    end
+    rec = @db.execute(sql).reverse
+    # 要素７の配列の配列から要素5の配列の配列へ
+    rec.map!{|e| e[0].gsub!('-','/'); r = e[6]/e[4];[e[0], e[3]*r,
+                                          e[1]*r, e[4]*r, e[2]*r]}
+                                      # e[2]*r, e[3]*r, e[4]*r, e[5]]}
+                                      # volumeデータがあればGoogle Chart, NG
+                                      # date, l, o, c, h for Google Chart
+    return rec
+  end
+  def getjson
+    rec = nil
+    begin
+      rec = foo params[:code], 60
+      #rec = @db.execute( "select date, open, high, low, close, volume, adj from '#{params[:code]}' order by date desc limit 60;" ).reverse
+      # 要素７の配列の配列から要素5の配列の配列へ
+      #rec.map!{|e| e[0].gsub!('-','/'); r = e[6]/e[4];[e[0], e[3]*r,
+      #                                      e[1]*r, e[4]*r, e[2]*r]}
+                                            # e[2]*r, e[3]*r, e[4]*r, e[5]]}
+                                            # volumeデータがあればGoogle Chart, NG
+                                            # date, l, o, c, h for Google Chart
+    rescue => err
+      puts err
+      redirect "/codetable", 303
+      rec = "no code table"
+    end
+    rec.to_json
+  end
+end

@@ -1,0 +1,30 @@
+doctype 5
+html lang='ja'
+  head
+    title 🔥△ codetable
+    / <!-- Global site tag (gtag.js) - Google Analytics -->
+    / script { async src="https://www.googletagmanager.com/gtag/js?id=UA-156997905-1" }
+    / javascript:
+    /   window.dataLayer = window.dataLayer || [];
+    /   function gtag(){dataLayer.push(arguments);}
+    /   gtag('js', new Date());
+    /   gtag('config', 'UA-156997905-1');
+
+    // style == sass :_codetable
+    // style == sass :_codetable
+
+  body
+    h1 ="codetable " + @strDate
+    div.container
+      - @codeAr.each do |e|
+        div.cell
+          =e[0]
+          br
+          div.campany
+            a href="/chart/#{e[0]}"
+              =" " + e[1]
+// check slim commentary -> indent needed!
+//    == sass :_bar
+    == slim :_foo
+  body style="display: flex; height: 100%; flex-direction: column"
+    div.container style="flex: 1; overflow: auto"

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Face Detection API sample</title>
+</head>
+<body>
+
+    <img src="face.png" id="image">
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const image = document.getElementById('image');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let scale = 1;
+
+        image.onload = function() {
+            canvas.width = image.width;   //Canvasを画像と同じ大きさにする
+            canvas.height = image.height; //Canvasを画像と同じ大きさにする
+            ctx.drawImage(image,
+                0, 0, image.width, image.height,
+                0, 0, canvas.width, canvas.height);
+            scale = canvas.width / image.width;
+            detect(); //追加：読み込み完了後に写真に四角い線を描画する
+        };
+
+        function detect() {
+            if (window.FaceDetector == undefined) {
+                console.error('Face Detection not supported');
+                return;
+            }
+            const faceDetector = new FaceDetector();
+            faceDetector.detect(image)
+                .then(faces => {
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = 'red';
+                    for (let face of faces) {
+                        ctx.rect(Math.floor(face.boundingBox.x * scale),
+                            Math.floor(face.boundingBox.y * scale),
+                            Math.floor(face.boundingBox.width * scale),
+                            Math.floor(face.boundingBox.height * scale));
+                        ctx.stroke();
+                        console.log(face);
+                    }
+                })
+                .catch((e) => {
+                    console.error("Boo, Face Detection failed: " + e);
+                });
+        }
+
+    </script>
+</body>
+
+</html>
